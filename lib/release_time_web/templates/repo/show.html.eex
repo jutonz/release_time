@@ -1,0 +1,25 @@
+<div class="header">
+  <div class="header__left">
+    Hello <%= @name %>
+  </div>
+  <div class="header__right">
+    <%= link("Logout", to: "/logout") %>
+  </div>
+</div>
+
+<div class="repo-title"><%= @repo["full_name"] %></div>
+
+<div class="repo__releases">
+  <%= for release <- @releases do %>
+    <p>
+      <%= release.name %>
+    </p>
+  <% end %>
+  <%= if Enum.empty?(@releases) do %>
+    <p>No releases</p>
+  <% end %>
+</div>
+
+<%= link("New release", to: "/") %>
+<div class="repo__new-release-button">
+</div>

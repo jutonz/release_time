@@ -9,21 +9,35 @@ defmodule ReleaseTimeWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :authenticated do
+    plug :require_auth
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/", ReleaseTimeWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :browser
 
-    get "/", HomeController, :index
+    get "/login", LoginController, :index
     get "/github-callback", LoginController, :exchange
 
-    #get "/", PageController, :index
+    pipe_through :authenticated
+
+    get "/", HomeController, :index
+    get "/logout", LoginController, :logout
+    get "/repos/:owner/:repo", RepoController, :show
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", ReleaseTimeWeb do
-  #   pipe_through :api
-  # end
+  def require_auth(conn, _options) do
+    case token = conn |> get_session(:gh_access_token) do
+      token when is_bitstring(token) ->
+        conn
+      _ ->
+        conn
+        |> redirect(to: "/login")
+        |> halt()
+    end
+  end
 end

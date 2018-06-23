@@ -1,1 +1,18 @@
-<a href="https://github.com/login/oauth/authorize?scope=<%= @scope %>&client_id=<%= @client_id %>">Login</a> with GitHub</a>
+<div class="header">
+  <div class="header__left">
+    Hello <%= @name %>
+  </div>
+  <div class="header__right">
+    <%= link("Logout", to: "/logout") %>
+  </div>
+</div>
+
+<div class="repo-list">
+  <div class="repo-list__header">Select a repository to manage</div>
+  <%= for repo <- @repos do %>
+    <p>
+      <%= link(repo["name"], to: "/repos/#{repo["full_name"]}") %>
+    </p>
+  <% end %>
+</div>
+

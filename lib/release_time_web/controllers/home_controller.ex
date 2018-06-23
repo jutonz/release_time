@@ -3,7 +3,12 @@ defmodule ReleaseTimeWeb.HomeController do
   alias ReleaseTime.GitHub
 
   def index(conn, _params) do
-    conn
-    |> render("index.html", client_id: GitHub.client_id, scope: GitHub.oauth_scope)
+    token = conn |> get_session(:gh_access_token)
+    login = conn |> get_session(:gh_user_login)
+
+    #{:ok, user} = token |> GitHub.me
+    {:ok, repos} = token |> GitHub.repos
+
+    conn |> render("index.html", name: login, repos: repos)
   end
 end

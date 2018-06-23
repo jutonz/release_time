@@ -1,7 +1,7 @@
 defmodule ReleaseTime.GitHub do
-  @client_id "4e7aa0943d61b8cf443c"
-  @client_secret "096653ad86f467f114c00f4ac08e28bf0fc56c1b"
-  @oauth_scope "user:email"
+  @client_id "0114b02c37a0aae68b02"
+  @client_secret "edef8d2cd603b07d4ccebc8210f32ba25795574b"
+  @oauth_scope "user,repo"
 
   def client_id, do: @client_id
   def client_secret, do: @client_secret
@@ -15,9 +15,10 @@ defmodule ReleaseTime.GitHub do
       code: code
     })
 
-    IO.inspect body
-
-    headers = [{"Accept", "json"}]
+    headers = [
+      {"Accept", "application/json"},
+      {"Content-Type", "application/json"}
+    ]
 
     response = HTTPoison.post(
       "https://github.com/login/oauth/access_token",
@@ -25,18 +26,69 @@ defmodule ReleaseTime.GitHub do
       headers
     )
 
-    IO.inspect response
-
     case response do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> 
         {:ok, decoded} = body |> Poison.decode
-        IO.inspect decoded
-        {:ok, "123"}
+        # TODO: Also confirm scope?
+        {:ok, decoded["access_token"]}
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
         {:error, "#{status_code}: #{body}"}
       _ ->
         IO.inspect response
         {:error, "nope"}
+    end
+  end
+
+  def me(access_token) do
+    url = "https://api.github.com/user"
+    with response <- access_token |> github_connection(:get, url),
+         {:ok, body} <- extract_body(response),
+      do: {:ok, body}
+  end
+
+  def repos(access_token) do
+    url = "https://api.github.com/user/repos"
+    with response <- access_token |> github_connection(:get, url),
+         {:ok, body} <- extract_body(response),
+      do: {:ok, body}
+  end
+
+  def repo(access_token, owner_id, repo_id) do
+    url = "https://api.github.com/repos/#{owner_id}/#{repo_id}"
+    with response <- access_token |> github_connection(:get, url),
+         {:ok, body} <- extract_body(response),
+      do: {:ok, body}
+  end
+
+  defp extract_body(response) do
+    IO.inspect response
+    case response do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> 
+        {:ok, decoded} = body |> Poison.decode
+        # TODO: Also confirm scope?
+        {:ok, decoded}
+      {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
+        {:error, "#{status_code}: #{body}"}
+      _ ->
+        {:error, "Something went wrong"}
+    end
+  end
+
+  def github_connection(access_token, method, url, opts \\ []) do
+    default_opts = [body: "", headers: []]
+    options = Keyword.merge(opts, default_opts) |> Enum.into(%{})
+    %{body: body, headers: user_headers} = options
+
+    persistent_headers = [
+      {"Authorization", "Bearer #{access_token}"},
+      {"Accept", "application/vnd.github.v3+json"},
+      {"User-Agent", "ReleaseTime [dev]"}
+    ]
+    headers = user_headers ++ persistent_headers
+
+    case method do
+      :get -> HTTPoison |> apply(method, [url, headers])
+      _ -> HTTPoison |> apply(method, [url, body, headers])
     end
   end
 end
