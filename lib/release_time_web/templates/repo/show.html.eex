@@ -12,7 +12,7 @@
 <div class="repo__releases">
   <%= for release <- @releases do %>
     <p>
-      <%= release.name %>
+      <%= link(release.name, to: release_path(@conn, :show, @repo["owner"]["login"], @repo["name"], release.name)) %>
     </p>
   <% end %>
   <%= if Enum.empty?(@releases) do %>
@@ -20,6 +20,4 @@
   <% end %>
 </div>
 
-<%= link("New release", to: "/") %>
-<div class="repo__new-release-button">
-</div>
+<%= link("New release", to: "/repos/#{@repo["full_name"]}/releases/new") %>

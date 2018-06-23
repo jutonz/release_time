@@ -1,0 +1,14 @@
+<div class="header">
+  <div class="header__left">
+    Hello <%= @name %>
+  </div>
+  <div class="header__right">
+    <%= link("Logout", to: "/logout") %>
+  </div>
+</div>
+
+<div class="repo-title"><%= @repo["full_name"] %></div>
+
+Release <%= @release.name %>
+
+<%= link("Delete release", to: release_path(@conn, :delete, @repo["owner"]["login"], @repo["name"], @release.name), method: "delete") %>

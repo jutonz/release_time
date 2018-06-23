@@ -12,11 +12,11 @@ defmodule ReleaseTime.Release do
   end
 
   @doc false
-  def changeset(relase, attrs) do
-    relase
+  def changeset(release, attrs \\ %{}) do
+    release
     |> cast(attrs, [:repo_id, :name])
     |> validate_required([:repo_id, :name])
-    |> unique_constraint([:name])
+    |> unique_constraint(:name)
   end
 
   def by_repo_id(repo_id, limit \\ 50, offset \\ 0) do
@@ -28,5 +28,14 @@ defmodule ReleaseTime.Release do
       limit: ^limit
     )
     {:ok, Repo.all(query)}
+  end
+
+  def get_by_name(release_name) do
+    query = from(
+      r in Release,
+      where: r.name == ^release_name
+    )
+
+    {:ok, query |> Repo.one}
   end
 end

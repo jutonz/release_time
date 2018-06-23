@@ -28,6 +28,12 @@ defmodule ReleaseTimeWeb.Router do
     get "/", HomeController, :index
     get "/logout", LoginController, :logout
     get "/repos/:owner/:repo", RepoController, :show
+
+    get "/repos/:owner/:repo/releases", ReleaseController, :index
+    post "/repos/:owner/:repo/releases", ReleaseController, :create
+    get "/repos/:owner/:repo/releases/new", ReleaseController, :new
+    get "/repos/:owner/:repo/releases/:release_name", ReleaseController, :show
+    delete "/repos/:owner/:repo/releases/:release_name", ReleaseController, :delete
   end
 
   def require_auth(conn, _options) do

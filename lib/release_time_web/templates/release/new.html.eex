@@ -1,0 +1,18 @@
+<div class="header">
+  <div class="header__left">
+    Hello <%= @name %>
+  </div>
+  <div class="header__right">
+    <%= link("Logout", to: "/logout") %>
+  </div>
+</div>
+
+<div class="repo-title"><%= @repo["full_name"] %></div>
+New Release
+
+<%= form_for @changeset, release_path(@conn, :create, @repo["owner"]["login"], @repo["name"]), fn(form) -> %>
+  <label>
+    <%= text_input(form, :name) %>
+  </label>
+  <%= submit("Create") %>
+<% end %>

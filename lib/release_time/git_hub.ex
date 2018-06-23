@@ -34,7 +34,6 @@ defmodule ReleaseTime.GitHub do
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
         {:error, "#{status_code}: #{body}"}
       _ ->
-        IO.inspect response
         {:error, "nope"}
     end
   end
@@ -61,7 +60,6 @@ defmodule ReleaseTime.GitHub do
   end
 
   defp extract_body(response) do
-    IO.inspect response
     case response do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> 
         {:ok, decoded} = body |> Poison.decode
