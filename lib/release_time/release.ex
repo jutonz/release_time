@@ -4,6 +4,8 @@ defmodule ReleaseTime.Release do
   import Ecto.Query, only: [from: 2]
   alias ReleaseTime.{Release, Repo}
 
+  @type t :: %__MODULE__{}
+
   schema "releases" do
     field :repo_id, :integer
     field :name, :string
@@ -30,12 +32,16 @@ defmodule ReleaseTime.Release do
     {:ok, Repo.all(query)}
   end
 
+  @spec get_by_name(String.t()) :: {:ok, Release.t()} | {:error, String.t()}
   def get_by_name(release_name) do
     query = from(
       r in Release,
       where: r.name == ^release_name
     )
 
-    {:ok, query |> Repo.one}
+    case query |> Repo.one do
+      release = %Release{} -> {:ok, release}
+      _ -> {:error, "Could not find release with name #{release_name}"}
+    end
   end
 end

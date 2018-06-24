@@ -40,11 +40,8 @@ defmodule ReleaseTimeWeb.ReleaseController do
   end
 
   def delete(conn, %{"owner" => owner, "repo" => repo, "release_name" => release_name}) do
-    {:ok, _release} =
-      release_name
-      |> Release.get_by_name
-      |> Release.changeset
-      |> Repo.delete
+    {:ok, release} = release_name |> Release.get_by_name
+    release |> Release.changeset |> Repo.delete
 
     conn
     |> put_flash(:info, "Deleted release")
