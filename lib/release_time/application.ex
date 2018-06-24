@@ -14,6 +14,7 @@ defmodule ReleaseTime.Application do
       supervisor(ReleaseTimeWeb.Endpoint, []),
       # Start your own worker by calling: ReleaseTime.Worker.start_link(arg1, arg2, arg3)
       # worker(ReleaseTime.Worker, [arg1, arg2, arg3]),
+      worker(ReleaseTime.HttpCache, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -1,4 +1,5 @@
 defmodule ReleaseTime.GitHub do
+  alias ReleaseTime.HttpCache
   @client_id "0114b02c37a0aae68b02"
   @client_secret "edef8d2cd603b07d4ccebc8210f32ba25795574b"
   @oauth_scope "user,repo"
@@ -47,16 +48,12 @@ defmodule ReleaseTime.GitHub do
 
   def repos(access_token) do
     url = "https://api.github.com/user/repos"
-    with response <- access_token |> github_connection(:get, url),
-         {:ok, body} <- extract_body(response),
-      do: {:ok, body}
+    fetch_json(access_token, :get, url)
   end
 
   def repo(access_token, owner_id, repo_id) do
     url = "https://api.github.com/repos/#{owner_id}/#{repo_id}"
-    with response <- access_token |> github_connection(:get, url),
-         {:ok, body} <- extract_body(response),
-      do: {:ok, body}
+    fetch_json(access_token, :get, url)
   end
 
   defp extract_body(response) do
@@ -69,6 +66,27 @@ defmodule ReleaseTime.GitHub do
         {:error, "#{status_code}: #{body}"}
       _ ->
         {:error, "Something went wrong"}
+    end
+  end
+
+  def fetch_json(access_token, method, url, opts \\ []) do
+    #default_opts = [use_cache: true]
+    #options = Keyword.merge(opts, default_opts) |> Enum.into(%{})
+    #%{use_cache: use_cache} = options
+
+    #case use_cache do
+      #true
+    #end
+
+    cache_key = "#{url}:#{access_token}"
+    case HttpCache.get(cache_key) do
+      {:hit, body} -> {:ok, body}
+      _ -> (
+        response = access_token |> github_connection(method, url, opts)
+        {:ok, body} = extract_body(response)
+        HttpCache.set(cache_key, body)
+        {:ok, body}
+      )
     end
   end
 
