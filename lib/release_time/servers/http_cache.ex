@@ -24,12 +24,12 @@ defmodule ReleaseTime.HttpCache do
 
   def init(:ok) do
     cache = %{}
-    log "HELLO FRIENDS"
     {:ok, cache}
   end
 
   def handle_cast({:set, key, value}, cache) do
     cache = cache |> Map.put(key, value)
+    schedule_expire(key)
     log "Caching key #{key}"
     {:noreply, cache}
   end
@@ -46,6 +46,21 @@ defmodule ReleaseTime.HttpCache do
         {:reply, {:hit, value}, cache}  
       )
     end
+  end
+
+  def handle_info({:expire_key, key}, cache) do
+    log "Expiring cache key #{key}"
+    cache = cache |> Map.delete(key)
+    {:noreply, cache}
+  end
+
+  ##############################################################################
+  # Private
+  ##############################################################################
+
+  defp schedule_expire(key) do
+    # Expire cache after two minutes
+    Process.send_after(self(), {:expire_key, key}, 2 * 1000 * 60)
   end
 
   defp log(message) do
