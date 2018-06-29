@@ -1,9 +1,11 @@
 <%= render ReleaseTimeWeb.SharedView, "header.html", name: @name %>
 
-<%= link("Back to releases", to: "/repos/#{@repo["full_name"]}") %>
-
-<div class="repo-title"><%= @repo["full_name"] %></div>
-
-Release <%= @release.name %>
+<div class="rt-breadcrumbs">
+  <%= link("Repos", to: "/", class: "rt-breadcrumbs__crumb") %>
+  <div class="rt-breadcrumbs__separator">></div>
+  <%= link(@repo["full_name"], to: "/repos/#{@repo["full_name"]}", class: "rt-breadcrumbs__crumb") %>
+  <div class="rt-breadcrumbs__separator">></div>
+  <div class="rt-breadcrumbs__crumb"><%= @release.name %></div>
+</div>
 
 <%= link("Delete release", to: release_path(@conn, :delete, @repo["owner"]["login"], @repo["name"], @release.name), method: "delete") %>

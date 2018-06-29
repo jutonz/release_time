@@ -33,18 +33,26 @@ body, form, ul, table {
   margin-bottom: 15px;
 }
 
-/* Home route */
-
-.repo-list__header {
-  font-size: 1.75rem;
+.rt-page-header {
+  font-size: 1.5rem;
   margin-top: 10px;
   margin-bottom: 20px;
 }
 
-/* Repo route */
-
-.repo-title {
+.rt-breadcrumbs {
+  display: flex;
   font-size: 1.75rem;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.rt-breadcrumbs__separator {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.rt-breadrumbs__crumb {
 }

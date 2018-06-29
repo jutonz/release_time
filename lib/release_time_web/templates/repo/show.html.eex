@@ -1,8 +1,12 @@
 <%= render ReleaseTimeWeb.SharedView, "header.html", name: @name %>
 
-<%= link("Back to repositories", to: "/") %>
+<div class="rt-breadcrumbs">
+  <%= link("Repos", to: "/", class: "rt-breadcrumbs__crumb") %>
+  <div class="rt-breadcrumbs__separator">></div>
+  <div class="rt-breadcrumbs__crumb"><%= @repo["full_name"] %></div>
+</div>
 
-<div class="repo-title"><%= @repo["full_name"] %></div>
+<div class="rt-page-header">Releases</div>
 
 <div class="repo__releases">
   <%= for release <- @releases do %>

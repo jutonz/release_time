@@ -1,7 +1,12 @@
 <%= render ReleaseTimeWeb.SharedView, "header.html", name: @name %>
 
+<div class="rt-breadcrumbs">
+  <div class="rt-breadcrumbs__crumb">Repos</div>
+</div>
+
+<div class="rt-page-header">Select a repository to manage</div>
+
 <div class="repo-list">
-  <div class="repo-list__header">Select a repository to manage</div>
   <%= for repo <- @repos do %>
     <p>
       <%= link(repo["name"], to: "/repos/#{repo["full_name"]}") %>
