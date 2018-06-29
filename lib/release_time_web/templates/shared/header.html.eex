@@ -1,0 +1,8 @@
+<div class="header">
+  <div class="header__left">
+    Hello <%= @name %>
+  </div>
+  <div class="header__right">
+    <%= link("Logout", to: "/logout") %>
+  </div>
+</div>

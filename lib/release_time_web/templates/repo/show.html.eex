@@ -1,11 +1,6 @@
-<div class="header">
-  <div class="header__left">
-    Hello <%= @name %>
-  </div>
-  <div class="header__right">
-    <%= link("Logout", to: "/logout") %>
-  </div>
-</div>
+<%= render ReleaseTimeWeb.SharedView, "header.html", name: @name %>
+
+<%= link("Back to repositories", to: "/") %>
 
 <div class="repo-title"><%= @repo["full_name"] %></div>
 
