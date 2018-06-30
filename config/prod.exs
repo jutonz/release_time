@@ -42,7 +42,7 @@ config :release_time, ReleaseTimeWeb.Endpoint,
 
 
 config :release_time, ReleaseTime.GitHub,
-  client_id: System.get_env("GH_CLIENT_ID")
+  client_id: System.get_env("GH_CLIENT_ID"),
   client_secret: System.get_env("GH_CLIENT_SECRET")
 # ## SSL Support
 #
