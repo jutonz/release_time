@@ -35,18 +35,18 @@ spec:
           - name: SECRET_KEY_BASE
             valueFrom:
               secretKeyRef:
-                name: secret-key-base
+                name: release-time-secrets
                 key: SECRET_KEY_BASE
           - name: PGHOST
             value: psql
           - name: PGPASS
             valueFrom:
               secretKeyRef:
-                name: dbsecrets
+                name: release-time-secrets
                 key: PGPASS
           - name: PGUSER
             valueFrom:
               secretKeyRef:
-                name: dbsecrets
+                name: release-time-secrets
                 key: PGUSER
       restartPolicy: Always

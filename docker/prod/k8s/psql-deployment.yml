@@ -21,24 +21,24 @@ spec:
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: dbsecrets
+                name: release-time-secrets
                 key: PGUSER
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: dbsecrets
+                name: release-time-secrets
                 key: PGPASS
           - name: POSTGRES_DB
-            value: homepage_prod
+            value: release_time_prod
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
-                name: aws
+                name: release-time-secrets
                 key: AWS_ACCESS_KEY_ID
           - name: AWS_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
-                name: aws
+                name: release-time-secrets
                 key: AWS_SECRET_ACCESS_KEY
         lifecycle:
           preStop:

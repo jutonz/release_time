@@ -15,11 +15,30 @@ use Mix.Config
 # which you typically run after static files are built.
 config :release_time, ReleaseTimeWeb.Endpoint,
   load_from_system_env: true,
-  url: [host: "example.com", port: 80],
+  url: [host: "releases.jutonz.com", scheme: :http],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
 config :logger, level: :info
+
+db_host = System.get_env("PGHOST") || "psql"
+db_user = System.get_env("PGUSER")
+db_pass = System.get_env("PGPASS")
+db_port = System.get_env("PGPORT") || 5432
+
+config :release_time, ReleaseTime.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  hostname: db_host,
+  username: db_user,
+  password: db_pass,
+  port: db_port,
+  database: "release_time_prod",
+  pool_size: 20
+
+secret_key_base = System.get_env("SECRET_KEY_BASE")
+
+config :release_time, ReleaseTimeWeb.Endpoint,
+  secret_key_base: secret_key_base
 
 # ## SSL Support
 #
@@ -58,7 +77,3 @@ config :logger, level: :info
 #
 #     config :release_time, ReleaseTimeWeb.Endpoint, server: true
 #
-
-# Finally import the config/prod.secret.exs
-# which should be versioned separately.
-import_config "prod.secret.exs"
