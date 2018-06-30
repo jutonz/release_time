@@ -20,6 +20,7 @@ defmodule ReleaseTimeWeb.Router do
   scope "/", ReleaseTimeWeb do
     pipe_through :browser
 
+    get "/healthz", HealthController, :healthz
     get "/login", LoginController, :index
     get "/github-callback", LoginController, :exchange
 

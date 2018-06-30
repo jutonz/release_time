@@ -1,0 +1,25 @@
+version: "2"
+services:
+  app:
+    image: jutonz/release-time-prod-app:1
+    depends_on:
+      - psql
+    links:
+      - psql
+    ports:
+      - "4000:4000"
+    environment:
+      SECRET_KEY_BASE: "9Z4EOxi6xe+P7ci7gSQn/Lqt4QIXinGJu+CW4YI0lQYaBzFfJsvLvMDm2B38ETM+"
+      DATABASE_URL: postgres://homepage:homepage@psql:5432/homepage_prod
+      PGHOST: psql
+      PGUSER: homepage
+      PGPASS: homepage
+      PORT: "4000"
+  psql:
+    image: jutonz/release-time-prod-psql:1
+    environment:
+      POSTGRES_USER: homepage
+      POSTGRES_PASSWORD: homepage
+      POSTGRES_DB: homepage_prod
+      AWS_ACCESS_KEY_ID: "${HOMEPAGE_AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_ACCESS_KEY: "${HOMEPAGE_AWS_SECRET_ACCESS_KEY}"
