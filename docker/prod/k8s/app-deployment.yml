@@ -49,4 +49,14 @@ spec:
               secretKeyRef:
                 name: release-time-secrets
                 key: PGUSER
+          - name: GH_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: release-time-secrets
+                key: GH_CLIENT_ID
+          - name: GH_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: release-time-secrets
+                key: GH_CLIENT_SECRET
       restartPolicy: Always

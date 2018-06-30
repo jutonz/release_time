@@ -1,12 +1,17 @@
 defmodule ReleaseTime.GitHub do
   alias ReleaseTime.HttpCache
-  @client_id "0114b02c37a0aae68b02"
-  @client_secret "edef8d2cd603b07d4ccebc8210f32ba25795574b"
-  @oauth_scope "user,repo"
 
-  def client_id, do: @client_id
-  def client_secret, do: @client_secret
-  def oauth_scope, do: @oauth_scope
+  def client_id do
+    Application.get_env(:release_time, ReleaseTime.GitHub)[:client_id]
+  end
+
+  def client_secret do
+    Application.get_env(:release_time, ReleaseTime.GitHub)[:client_secret]
+  end
+
+  def oauth_scope do
+    "user,repo"
+  end
 
   @spec exchange(code :: String.t()) :: {:ok, access_token :: String.t()} | {:error, reason :: String.t()}
   def exchange(code) do

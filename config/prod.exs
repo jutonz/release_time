@@ -40,6 +40,10 @@ secret_key_base = System.get_env("SECRET_KEY_BASE")
 config :release_time, ReleaseTimeWeb.Endpoint,
   secret_key_base: secret_key_base
 
+
+config :release_time, ReleaseTime.GitHub,
+  client_id: System.get_env("GH_CLIENT_ID")
+  client_secret: System.get_env("GH_CLIENT_SECRET")
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

@@ -6,7 +6,6 @@ log/
 tmp/
 docker.thor
 .mix
-priv/static
 
 *.log
 *.pid

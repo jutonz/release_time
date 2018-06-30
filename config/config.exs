@@ -22,6 +22,10 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:user_id]
 
+config :release_time, ReleaseTime.GitHub,
+  client_id: "0114b02c37a0aae68b02",
+  client_secret: "edef8d2cd603b07d4ccebc8210f32ba25795574b"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
