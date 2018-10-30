@@ -15,7 +15,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :release_time, ReleaseTimeWeb.Endpoint,
   load_from_system_env: true,
-  url: [host: "releases.jutonz.com", scheme: :http],
+  url: [host: "releases.notmalware.biz", scheme: :http],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
